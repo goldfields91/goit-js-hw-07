@@ -65,10 +65,3 @@ ul {
   height: 300px;
 }
 
-#boxes {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 15px;
-  row-gap: 25px;
-}

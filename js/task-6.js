@@ -1,37 +1,47 @@
-const input = document.querySelector("input");
-const createButton = document.querySelector("button[data-create]");
-const boxes = document.querySelector("#boxes");
-createButton.addEventListener("click", () => {
-  const amount = input.valueAsNumber;
-  createBoxes(amount);
-});
-function createBoxes(amount) {
-  if (amount <= 100 && amount >= 1 && amount / Math.floor(amount) === 1) {
-    const dataHtml = [];
-    for (let i = 1; i <= amount; i++) {
-      const htmlToInsert = `
-        <div style="background-Color: ${getRandomHexColor()}; width: ${
-        20 + i * 10
-      }px;
-         height: ${20 + i * 10}px; border-radius: 10px; text-align: center">
-          <p style="margin: 0;">${i}</p>
-        </div>
-`;
-      dataHtml.push(htmlToInsert);
-    }
-    boxes.innerHTML = dataHtml.join("");
-    input.value = "";
-  } else {
-    return alert("Insert integer between 1 and 100");
-  }
-}
-const destroyButton = document.querySelector("button[data-destroy]");
-destroyButton.addEventListener("click", () => destroyBoxes());
-function destroyBoxes() {
-  boxes.innerHTML = "";
-}
 function getRandomHexColor() {
-  return `#${Math.floor(Math.random() * 16777215)
-    .toString(16)
-    .padStart(6, 0)}`;
+	return `#${Math.floor(Math.random() * 16777215)
+		.toString(16)
+		.padStart(6, '0')}`
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+	const controls = document.getElementById('controls')
+	const input = controls.querySelector('input')
+	const createButton = controls.querySelector('[data-create]')
+	const destroyButton = controls.querySelector('[data-destroy]')
+	const boxes = document.getElementById('boxes')
+
+	createButton.addEventListener('click', () => {
+		const amount = Number(input.value)
+		if (amount >= 1 && amount <= 100) {
+			createBoxes(amount)
+			input.value = ''
+		} else {
+			alert('Please enter a number between 1 and 100')
+		}
+	})
+
+	destroyButton.addEventListener('click', destroyBoxes)
+
+	function createBoxes(amount) {
+		const fragment = document.createDocumentFragment()
+		let size = 30
+
+		for (let i = 0; i < amount; i++) {
+			const box = document.createElement('div')
+			box.style.width = `${size}px`
+			box.style.height = `${size}px`
+			box.style.backgroundColor = getRandomHexColor()
+			boxes.appendChild(box)
+
+			size += 10
+		}
+
+		boxes.innerHTML = ''
+		boxes.appendChild(fragment)
+	}
+
+	function destroyBoxes() {
+		boxes.innerHTML = ''
+	}
+})
