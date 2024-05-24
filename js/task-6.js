@@ -1,47 +1,39 @@
-function getRandomHexColor() {
-	return `#${Math.floor(Math.random() * 16777215)
-		.toString(16)
-		.padStart(6, '0')}`
+const divFirstElem = document.querySelector('#controls');
+const divBoxElem = document.querySelector('#boxes');
+const inputElem = document.querySelector('input');
+const btnCreateElem = divFirstElem.querySelector('[data-create]');
+console.log(btnCreateElem);
+const btnDestroyElem = divFirstElem.querySelector('[data-destroy]');
+console.log(btnDestroyElem);
+btnDestroyElem.classList.add('destroy');
+inputElem.classList.add('input-amount');
+
+btnCreateElem.addEventListener('click', () => {
+  const amount = Number(inputElem.value);
+  if (amount >= 1 && amount <= 100) {
+    createBoxes(amount);
+    inputElem.value = '';
+  }
+});
+function createBoxes(amount) {
+  const arrBoxElem = [];
+  divBoxElem.innerHTML = '';
+  for (let i = 0; i < amount; i++) {
+    const BoxElem = document.createElement('div');
+    BoxElem.style.width = `${30 + i * 10}px`;
+    BoxElem.style.height = `${30 + i * 10}px`;
+    BoxElem.style.backgroundColor = getRandomHexColor();
+    arrBoxElem.push(BoxElem);
+  }
+  divBoxElem.append(...arrBoxElem);
 }
+function destroyBoxes() {
+  divBoxElem.innerHTML = '';
+}
+btnDestroyElem.addEventListener('click', destroyBoxes);
 
-document.addEventListener('DOMContentLoaded', () => {
-	const controls = document.getElementById('controls')
-	const input = controls.querySelector('input')
-	const createButton = controls.querySelector('[data-create]')
-	const destroyButton = controls.querySelector('[data-destroy]')
-	const boxes = document.getElementById('boxes')
-
-	createButton.addEventListener('click', () => {
-		const amount = Number(input.value)
-		if (amount >= 1 && amount <= 100) {
-			createBoxes(amount)
-			input.value = ''
-		} else {
-			alert('Please enter a number between 1 and 100')
-		}
-	})
-
-	destroyButton.addEventListener('click', destroyBoxes)
-
-	function createBoxes(amount) {
-		const fragment = document.createDocumentFragment()
-		let size = 30
-
-		for (let i = 0; i < amount; i++) {
-			const box = document.createElement('div')
-			box.style.width = `${size}px`
-			box.style.height = `${size}px`
-			box.style.backgroundColor = getRandomHexColor()
-			boxes.appendChild(box)
-
-			size += 10
-		}
-
-		boxes.innerHTML = ''
-		boxes.appendChild(fragment)
-	}
-
-	function destroyBoxes() {
-		boxes.innerHTML = ''
-	}
-})
+function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, 0)}`;
+}
